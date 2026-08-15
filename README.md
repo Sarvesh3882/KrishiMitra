@@ -383,8 +383,7 @@ Contributions are welcome! Please follow these guidelines:
 ## 📞 Support
 
 For questions or support:
-- Email: [team email]
-- GitHub Issues: [repo issues link]
+- Email: codex5622@gmail.com
 - Kisan Call Centre: 1800-180-1551
 
 ---
