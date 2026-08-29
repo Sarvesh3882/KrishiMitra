@@ -1,6 +1,7 @@
 import { Globe } from 'lucide-react';
 
 export function DashboardHeader() {
+
   const handleLanguageSelection = () => {
     // Clear the language from localStorage to show language selection page
     localStorage.removeItem('language');

@@ -1,7 +1,4 @@
-import { useTranslation } from '../i18n/useTranslation';
-
 export function GovHeader() {
-  const { t: _ } = useTranslation();
 
   return (
     <header className="gov-header">
