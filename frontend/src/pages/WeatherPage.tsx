@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { useState, useEffect } from 'react';
 import { DashboardHeader } from '../components/DashboardHeader';
 import { CloudRain, Cloud, Sun, Wind, MapPin, Calendar, Droplets, AlertTriangle, CheckCircle, Sprout } from 'lucide-react';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface WeatherData {
   location: {
@@ -42,6 +44,7 @@ interface WeatherData {
 }
 
 export function WeatherPage() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [error, setError] = useState(false);
@@ -91,15 +94,23 @@ export function WeatherPage() {
   };
 
   const getDayNameHindi = (dateStr: string, index: number): string => {
-    if (index === 0) return 'आज';
-    if (index === 1) return 'कल';
+    if (index === 0) return t('day.today');
+    if (index === 1) return t('day.tomorrow');
     
     const date = new Date(dateStr);
-    const dayNames = ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
+    const dayNames = [
+      t('day.sunday'),
+      t('day.monday'),
+      t('day.tuesday'),
+      t('day.wednesday'),
+      t('day.thursday'),
+      t('day.friday'),
+      t('day.saturday')
+    ];
     return dayNames[date.getDay()];
   };
 
-  const getWeatherIcon = (code: number) => {
+  const getWeatherIcon = (code: number): React.ReactElement => {
     const iconProps = { size: 40, strokeWidth: 2, className: "text-gray-700" };
     
     if (code === 0) return <Sun {...iconProps} className="text-yellow-500" />;
@@ -118,7 +129,7 @@ export function WeatherPage() {
       <DashboardHeader />
 
       <main className="flex-1 content-with-nav">
-        <div className="max-w-[420px] mx-auto px-4 py-5">
+        <div className="max-w-[420px] mx-auto px-4 py-6">
           {/* Loading State */}
           {loading && (
             <div className="space-y-4">
@@ -147,16 +158,16 @@ export function WeatherPage() {
                 </div>
               </div>
               <h3 className="text-[18px] font-bold text-gray-900 mb-2">
-                मौसम की जानकारी उपलब्ध नहीं है
+                {t('weather.unavailable')}
               </h3>
               <p className="text-gray-600 text-[14px] mb-4">
-                कृपया थोड़ी देर बाद फिर कोशिश करें।
+                {t('help.tryLater')}
               </p>
               <button
                 onClick={fetchWeather}
                 className="px-6 py-3 bg-[#0b5e2c] text-white rounded-lg text-[14px] font-semibold hover:bg-[#094d24] transition-colors"
               >
-                फिर कोशिश करें
+                {t('general.retry')}
               </button>
             </div>
           )}
@@ -173,7 +184,7 @@ export function WeatherPage() {
                   </div>
                 </div>
                 <h1 className="text-[28px] font-bold text-gray-900 mb-6 leading-tight">
-                  बारिश कब होगी?
+                  {t('weather.rainWhenQuestion')}
                 </h1>
 
                 {weatherData.next_rain ? (
@@ -186,12 +197,12 @@ export function WeatherPage() {
                     </div>
                     {weatherData.next_rain.duration_hours > 1 && (
                       <div className="text-[14px] text-gray-600 mb-4">
-                        {weatherData.next_rain.time_end} तक
+                        {weatherData.next_rain.time_end} {t('help.until')}
                       </div>
                     )}
                     <div className="flex justify-center gap-8 mt-5">
                       <div>
-                        <div className="text-[12px] text-gray-500 mb-1.5">लगभग</div>
+                        <div className="text-[12px] text-gray-500 mb-1.5">{t('weather.approximately')}</div>
                         <div className="flex items-center justify-center gap-1.5">
                           <Droplets size={18} strokeWidth={2} className="text-blue-500" />
                           <span className="text-[18px] font-bold text-blue-600">
@@ -201,7 +212,7 @@ export function WeatherPage() {
                       </div>
                       <div className="w-px bg-gray-200"></div>
                       <div>
-                        <div className="text-[12px] text-gray-500 mb-1.5">संभावना</div>
+                        <div className="text-[12px] text-gray-500 mb-1.5">{t('weather.probability')}</div>
                         <div className="text-[18px] font-bold text-blue-600">
                           {weatherData.next_rain.probability}%
                         </div>
@@ -214,10 +225,10 @@ export function WeatherPage() {
                       {getWeatherIcon(weatherData.current.weather_code)}
                     </div>
                     <div className="text-[17px] font-semibold text-gray-900 mb-2">
-                      अभी बारिश की संभावना कम है
+                      {t('weather.noRainExpected')}
                     </div>
                     <div className="text-[13px] text-gray-600">
-                      अगले 7 दिनों में महत्वपूर्ण बारिश नहीं
+                      {t('weather.forecastDays')}
                     </div>
                   </div>
                 )}
@@ -252,7 +263,7 @@ export function WeatherPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <Calendar size={16} strokeWidth={2} className="text-gray-600" />
                   <h3 className="text-[16px] font-bold text-gray-900">
-                    7 दिन का मौसम
+                    {t('weather.forecastDays')}
                   </h3>
                 </div>
                 <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
@@ -286,7 +297,7 @@ export function WeatherPage() {
                 <div className="flex items-center gap-2 mb-3">
                   <AlertTriangle size={16} strokeWidth={2} className="text-orange-500" />
                   <h3 className="text-[16px] font-bold text-gray-900">
-                    मौसम चेतावनी
+                    {t('weather.alerts')}
                   </h3>
                 </div>
                 {weatherData.alerts && weatherData.alerts.length > 0 ? (
@@ -314,7 +325,7 @@ export function WeatherPage() {
                   <div className="flex items-center gap-2 text-green-700 bg-green-50 rounded-lg p-3">
                     <CheckCircle size={18} strokeWidth={2} className="text-green-600 flex-shrink-0" />
                     <p className="text-[13px] font-medium">
-                      फिलहाल कोई बड़ी मौसम चेतावनी नहीं
+                      {t('weather.noAlerts')}
                     </p>
                   </div>
                 )}
@@ -328,7 +339,7 @@ export function WeatherPage() {
                   </div>
                   <div>
                     <h3 className="text-[14px] font-bold text-green-900 mb-1.5">
-                      किसान के लिए
+                      {t('weather.advisory')}
                     </h3>
                     <p className="text-[13px] text-green-800 leading-relaxed">
                       {weatherData.farmer_advisory}
@@ -340,7 +351,7 @@ export function WeatherPage() {
               {/* Data Source */}
               <div className="text-center py-2">
                 <p className="text-[10px] text-gray-400">
-                  {weatherData.source} • हर 30 मिनट में अपडेट
+                  {weatherData.source} • {t('weather.updateFrequency')}
                 </p>
               </div>
             </div>

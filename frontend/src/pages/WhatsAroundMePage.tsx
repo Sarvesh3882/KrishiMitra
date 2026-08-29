@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GovHeader } from '../components/GovHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { useTranslation } from '../i18n/useTranslation';
 
 // Kopergaon location
 const LOCATION = {
@@ -45,6 +46,7 @@ interface MandiPrice {
 
 export function WhatsAroundMePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [prices, setPrices] = useState<MandiPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -96,10 +98,10 @@ export function WhatsAroundMePage() {
       setPrices(validPrices);
       
       if (validPrices.length === 0) {
-        setError('No prices available at the moment. Please try again later.');
+        setError(t('mandi.noResults'));
       }
     } catch (err: any) {
-      setError('Failed to load market prices');
+      setError(t('mandi.loading'));
       console.error('Price fetch error:', err);
     } finally {
       setLoading(false);
@@ -129,21 +131,21 @@ export function WhatsAroundMePage() {
         // Check if data is available
         if (data.availability === 'not_available' || data.availability === 'not_available_in_state') {
           // Show helpful message
-          setError(data.message || `No prices found for ${cropName} in Maharashtra`);
+          setError(data.message || t('mandi.noResults'));
           setPrices([]);
         } else if (data.prices && data.prices.length > 0) {
           // Farmer.in provides state-level aggregated prices
           setPrices(data.prices);
         } else {
-          setError(`No prices available for ${cropName}`);
+          setError(t('mandi.unavailable'));
           setPrices([]);
         }
       } else {
-        setError(`Failed to fetch prices for ${cropName}`);
+        setError(t('mandi.unavailable'));
         setPrices([]);
       }
     } catch (err: any) {
-      setError(`Error searching for ${cropName}. Please try again.`);
+      setError(t('error.networkError'));
       console.error('Search error:', err);
       setPrices([]);
     } finally {
@@ -180,9 +182,9 @@ export function WhatsAroundMePage() {
   const getTrendIcon = (trend?: 'up' | 'down' | 'same') => {
     switch (trend) {
       case 'up':
-        return { icon: '↑', color: 'text-green-600', bg: 'bg-green-50', label: 'Rising' };
+        return { icon: '↑', color: 'text-green-600', bg: 'bg-green-50', label: t('mandi.latestUpdates') };
       case 'down':
-        return { icon: '↓', color: 'text-red-600', bg: 'bg-red-50', label: 'Falling' };
+        return { icon: '↓', color: 'text-red-600', bg: 'bg-red-50', label: t('error.dataUnavailable') };
       case 'same':
         return { icon: '→', color: 'text-gray-600', bg: 'bg-gray-50', label: 'Stable' };
       default:
@@ -206,7 +208,7 @@ export function WhatsAroundMePage() {
           <div className="max-w-[420px] mx-auto px-4 py-4">
             <div className="flex items-center justify-between mb-2">
               <h1 className="text-[22px] font-bold text-[#0b5e2c]">
-                📍 Dashboard
+                📍 {t('home.whatsAroundMe')}
               </h1>
               <div className="text-right">
                 <div className="text-[13px] font-semibold text-gray-900">{LOCATION.name}</div>
@@ -214,13 +216,13 @@ export function WhatsAroundMePage() {
               </div>
             </div>
             <div className="text-[13px] text-gray-600">
-              Today's market prices around you
+              {t('mandi.todayRates')}
             </div>
           </div>
         </div>
 
         {/* Content Area */}
-        <div className="max-w-[420px] mx-auto px-4 py-5">
+        <div className="max-w-[420px] mx-auto px-4 py-4">
           {/* Search Bar */}
           <div className="bg-white rounded-lg p-3 mb-4 shadow-sm border border-gray-200">
             <form onSubmit={handleSearch} className="mb-3">
@@ -229,7 +231,7 @@ export function WhatsAroundMePage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search crop... (e.g., Wheat, Rice, Potato)"
+                  placeholder={t('mandi.searchPlaceholder')}
                   className="w-full px-4 py-3 pr-24 border-2 border-gray-200 rounded-lg 
                             focus:outline-none focus:border-[#0b5e2c] text-[14px]"
                 />
@@ -241,7 +243,7 @@ export function WhatsAroundMePage() {
                             disabled:opacity-50 disabled:cursor-not-allowed
                             hover:bg-[#094d24] transition-colors"
                 >
-                  Search
+                  {t('mandi.search')}
                 </button>
               </div>
             </form>
@@ -269,7 +271,7 @@ export function WhatsAroundMePage() {
                 className="mt-3 w-full py-2 text-[13px] text-[#0b5e2c] font-semibold
                           border-2 border-[#0b5e2c] rounded-lg hover:bg-green-50 transition-colors"
               >
-                ← Back to Feed
+                ← {t('mandi.backToFeed')}
               </button>
             )}
           </div>
@@ -285,10 +287,10 @@ export function WhatsAroundMePage() {
               <div className="text-[48px]">🏪</div>
               <div className="flex-1">
                 <h3 className="text-white font-bold text-[16px] mb-1">
-                  Allied Farming Bazar
+                  {t('allied.title')}
                 </h3>
                 <p className="text-white/90 text-[12px] leading-relaxed">
-                  Explore eggs, poultry, fish, dairy, goat & more
+                  {t('allied.subtitle')}
                 </p>
                 <div className="mt-2 flex items-center gap-2 text-[11px] text-white/80">
                   <span>🥚 Eggs</span>
@@ -307,7 +309,7 @@ export function WhatsAroundMePage() {
           {/* Loading */}
           {loading && (
             <div className="bg-white rounded-lg p-8">
-              <LoadingSpinner message={isSearching ? `Searching for ${searchQuery}...` : "Loading market prices..."} />
+              <LoadingSpinner message={isSearching ? t('mandi.searching') : t('mandi.loading')} />
             </div>
           )}
 
@@ -322,7 +324,7 @@ export function WhatsAroundMePage() {
                     onClick={isSearching ? handleBackToFeed : fetchAllPrices}
                     className="mt-3 text-[13px] text-amber-900 font-semibold underline hover:text-amber-950"
                   >
-                    {isSearching ? '← Back to Feed' : 'Refresh Prices'}
+                    {isSearching ? '← ' + t('mandi.backToFeed') : t('general.refresh')}
                   </button>
                 </div>
               </div>
@@ -336,8 +338,8 @@ export function WhatsAroundMePage() {
               <div className="flex items-center justify-between">
                 <div className="text-[13px] text-gray-600 font-medium">
                   {isSearching 
-                    ? `Search Results: ${searchQuery}` 
-                    : 'Latest Market Updates'}
+                    ? t('mandi.searching') 
+                    : t('mandi.latestUpdates')}
                 </div>
                 <div className="flex items-center gap-1 text-[11px] bg-green-50 text-green-700 px-2 py-1 rounded">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -399,7 +401,7 @@ export function WhatsAroundMePage() {
                     <div className="mb-3">
                       <div className="flex items-center justify-between mb-1">
                         <div className="text-[11px] text-gray-500 uppercase tracking-wide">
-                          Today's Rate
+                          {t('mandi.todayRates')}
                         </div>
                         {/* Trend Indicator */}
                         {getTrendIcon(price.trend) && (
@@ -424,7 +426,7 @@ export function WhatsAroundMePage() {
                         <span className="text-[32px] font-bold text-[#0b5e2c] leading-none">
                           ₹{price.price_per_quintal.toLocaleString()}
                         </span>
-                        <span className="text-[14px] text-gray-600">per quintal</span>
+                        <span className="text-[14px] text-gray-600">{t('mandi.perQuintal')}</span>
                       </div>
                     </div>
 
@@ -432,7 +434,7 @@ export function WhatsAroundMePage() {
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div className="bg-red-50 rounded-lg px-3 py-2 border border-red-100">
                         <div className="text-[10px] text-gray-600 uppercase tracking-wide mb-1">
-                          Min Price
+                          {t('mandi.minPrice')}
                         </div>
                         <div className="text-[18px] font-bold text-red-700">
                           ₹{price.min_price.toLocaleString()}
@@ -440,7 +442,7 @@ export function WhatsAroundMePage() {
                       </div>
                       <div className="bg-green-50 rounded-lg px-3 py-2 border border-green-100">
                         <div className="text-[10px] text-gray-600 uppercase tracking-wide mb-1">
-                          Max Price
+                          {t('mandi.maxPrice')}
                         </div>
                         <div className="text-[18px] font-bold text-green-700">
                           ₹{price.max_price.toLocaleString()}
@@ -465,8 +467,8 @@ export function WhatsAroundMePage() {
 
               {/* Source Attribution */}
               <div className="text-center text-[11px] text-gray-500 py-4">
-                <div>📊 Data from Farmer.in (AGMARKNET)</div>
-                <div className="mt-1">Open Agricultural Data</div>
+                <div>📊 {t('market.dataSource')}: AGMARKNET</div>
+                <div className="mt-1">{t('market.poweredBy')}</div>
               </div>
             </div>
           )}
@@ -476,7 +478,7 @@ export function WhatsAroundMePage() {
             <div className="bg-white rounded-lg p-8 text-center">
               <div className="text-gray-400 text-[48px] mb-3">🌾</div>
               <p className="text-gray-600 text-[14px] mb-2">
-                No market prices available
+                {t('mandi.unavailable')}
               </p>
               <p className="text-gray-500 text-[12px]">
                 for {LOCATION.name} right now
@@ -485,7 +487,7 @@ export function WhatsAroundMePage() {
                 onClick={fetchAllPrices}
                 className="mt-4 px-4 py-2 bg-[#0b5e2c] text-white rounded-lg text-[13px] font-semibold"
               >
-                Refresh
+                {t('general.refresh')}
               </button>
             </div>
           )}

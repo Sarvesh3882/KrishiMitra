@@ -1,4 +1,7 @@
+import { useTranslation } from '../i18n/useTranslation';
+
 export function GovHeader() {
+  const { t } = useTranslation();
 
   return (
     <header className="gov-header">
@@ -9,10 +12,10 @@ export function GovHeader() {
             <div className="text-3xl">🌾</div>
             <div>
               <h1 className="text-[19px] font-bold text-gov-green leading-tight">
-                KrishiMitra
+                {t('app.title')}
               </h1>
               <p className="text-[11px] text-gov-text-gray">
-                कृषि सहायक
+                {t('app.tagline') || 'कृषि सहायक'}
               </p>
             </div>
           </div>

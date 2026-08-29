@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { DashboardHeader } from '../components/DashboardHeader';
 import { schemeApi, type Scheme } from '../services/schemeApi';
 import { Tractor, Droplets, Sun, Home, Sprout, Phone, ChevronRight, CheckCircle, FileText, Users, AlertCircle } from 'lucide-react';
+import { useTranslation } from '../i18n/useTranslation';
 
 interface SubsidyCategory {
   id: string;
@@ -11,6 +12,7 @@ interface SubsidyCategory {
 }
 
 export function HelpPage() {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categorySchemes, setCategorySchemes] = useState<Scheme[]>([]);
   const [selectedScheme, setSelectedScheme] = useState<Scheme | null>(null);
@@ -20,38 +22,38 @@ export function HelpPage() {
     {
       id: 'equipment',
       icon: 'Tractor',
-      title: 'कृषि उपकरण',
-      description: 'ट्रैक्टर, यंत्र और उपकरणों पर सब्सिडी',
+      title: t('help.equipment'),
+      description: t('help.equipmentDesc'),
     },
     {
       id: 'irrigation',
       icon: 'Droplets',
-      title: 'ड्रिप सिंचाई',
-      description: 'ड्रिप और स्प्रिंकलर सिंचाई पर सहायता',
+      title: t('help.irrigation'),
+      description: t('help.irrigationDesc'),
     },
     {
       id: 'solar',
       icon: 'Sun',
-      title: 'सोलर कृषि',
-      description: 'सोलर पंप और सोलर उपकरण',
+      title: t('help.solar'),
+      description: t('help.solarDesc'),
     },
     {
       id: 'polyhouse',
       icon: 'Home',
-      title: 'पॉलीहाउस',
-      description: 'संरक्षित खेती के लिए सब्सिडी',
+      title: t('help.polyhouse'),
+      description: t('help.polyhouseDesc'),
     },
     {
       id: 'allied',
       icon: 'Sprout',
-      title: 'सहायक खेती',
-      description: 'मधुमक्खी, मशरूम, बकरी, मुर्गी पालन',
+      title: t('help.allied'),
+      description: t('help.alliedDesc'),
     },
     {
       id: 'modern',
       icon: 'Sprout',
-      title: 'आधुनिक खेती',
-      description: 'नई तकनीक और आधुनिक कृषि',
+      title: t('help.modern'),
+      description: t('help.modernDesc'),
     },
   ];
 
@@ -110,19 +112,19 @@ export function HelpPage() {
           <div className="px-4 pt-5 pb-4">
             <h1 className="text-[27px] font-bold text-gray-900 leading-[1.25] mb-1.5"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              मदद
+              {t('help.title')}
             </h1>
             <p className="text-[14px] text-gray-600 leading-[1.4]"
                style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              सरकारी सहायता, सब्सिडी और योजनाओं की जानकारी
+              {t('help.subtitle')}
             </p>
           </div>
 
           {/* Subsidy Schemes Section */}
           <div className="px-4 mb-5">
-            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-4"
+            <h2 className="text-[21px] font-bold text-gray-900 leading-[1.3] mb-3"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              सब्सिडी योजनाएं
+              {t('help.subsidySchemes')}
             </h2>
 
             {/* Subsidy Categories Grid - 2x2 */}
@@ -164,11 +166,11 @@ export function HelpPage() {
                 <div className="flex-1">
                   <h2 className="text-[17px] font-bold text-green-900 leading-[1.3] mb-1"
                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    कृषि उपकरण चाहिए?
+                    {t('help.equipmentQuery')}
                   </h2>
                   <p className="text-[13px] text-green-800 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    ट्रैक्टर, हार्वेस्टर और अन्य उपकरणों पर सरकारी सहायता पाएं
+                    {t('help.equipmentSupport')}
                   </p>
                 </div>
               </div>
@@ -179,7 +181,7 @@ export function HelpPage() {
                          flex items-center justify-center gap-2"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
               >
-                <span>सब्सिडी की जानकारी देखें</span>
+                <span>{t('help.viewSubsidyInfo')}</span>
                 <ChevronRight size={18} strokeWidth={2.5} />
               </button>
             </div>
@@ -187,9 +189,9 @@ export function HelpPage() {
 
           {/* Modern Farming Section */}
           <div className="px-4 mb-5">
-            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-4"
+            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-3"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              आधुनिक खेती
+              {t('help.modernTech')}
             </h2>
             <button
               onClick={() => setSelectedCategory('modern')}
@@ -204,11 +206,11 @@ export function HelpPage() {
                 <div className="flex-1">
                   <h3 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1"
                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    आधुनिक कृषि तकनीक पर सहायता
+                    {t('help.modernAgriTech')}
                   </h3>
                   <p className="text-[13px] text-gray-600 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    नई तकनीक अपनाने के लिए सरकारी सहायता
+                    {t('help.modernAgriSupport')}
                   </p>
                 </div>
                 <ChevronRight size={20} strokeWidth={2.5} className="text-[#0b5e2c] flex-shrink-0" />
@@ -218,9 +220,9 @@ export function HelpPage() {
 
           {/* Allied Farming Support Section */}
           <div className="px-4 mb-5">
-            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-4"
+            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-3"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              सहायक कृषि सहायता
+              {t('help.alliedSupport')}
             </h2>
             <div className="space-y-3">
               <button
@@ -236,11 +238,11 @@ export function HelpPage() {
                   <div className="flex-1">
                     <h3 className="text-[15px] font-bold text-gray-900 leading-[1.3] mb-0.5"
                         style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      मधुमक्खी पालन सहायता
+                      {t('help.beekeeping')}
                     </h3>
                     <p className="text-[12px] text-gray-600 leading-[1.4]"
                        style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      बॉक्स, उपकरण और प्रशिक्षण पर सब्सिडी
+                      {t('help.beekeepingSupport')}
                     </p>
                   </div>
                   <ChevronRight size={20} strokeWidth={2} className="text-[#0b5e2c] flex-shrink-0" />
@@ -260,11 +262,11 @@ export function HelpPage() {
                   <div className="flex-1">
                     <h3 className="text-[15px] font-bold text-gray-900 leading-[1.3] mb-0.5"
                         style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      मशरूम खेती सहायता
+                      {t('help.mushroom')}
                     </h3>
                     <p className="text-[12px] text-gray-600 leading-[1.4]"
                        style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      यूनिट स्थापना और प्रशिक्षण पर सहायता
+                      {t('help.mushroomSupport')}
                     </p>
                   </div>
                   <ChevronRight size={20} strokeWidth={2} className="text-[#0b5e2c] flex-shrink-0" />
@@ -284,11 +286,11 @@ export function HelpPage() {
                   <div className="flex-1">
                     <h3 className="text-[15px] font-bold text-gray-900 leading-[1.3] mb-0.5"
                         style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      बकरी / मुर्गी पालन
+                      {t('help.livestock')}
                     </h3>
                     <p className="text-[12px] text-gray-600 leading-[1.4]"
                        style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                      पशु, शेड और आहार पर सरकारी सहायता
+                      {t('help.livestockSupport')}
                     </p>
                   </div>
                   <ChevronRight size={20} strokeWidth={2} className="text-[#0b5e2c] flex-shrink-0" />
@@ -299,35 +301,35 @@ export function HelpPage() {
 
           {/* Government Schemes Section */}
           <div className="px-4 mb-5">
-            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-4"
+            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-3"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              सरकारी योजनाएं
+              {t('help.governmentSchemes')}
             </h2>
             <div className="bg-white rounded-xl border border-gray-200 p-5">
               <p className="text-[13px] text-gray-600 leading-[1.4] mb-4"
                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                महाराष्ट्र और केंद्र सरकार की किसान योजनाएं
+                {t('help.schemesSummary')}
               </p>
               <div className="space-y-2.5">
                 <div className="flex items-start gap-2.5 text-[13px] text-gray-700 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
                   <CheckCircle size={18} strokeWidth={2} className="text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>पीएम-किसान सम्मान निधि</span>
+                  <span>{t('help.pmKisan')}</span>
                 </div>
                 <div className="flex items-start gap-2.5 text-[13px] text-gray-700 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
                   <CheckCircle size={18} strokeWidth={2} className="text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>फसल बीमा योजना</span>
+                  <span>{t('help.cropInsurance')}</span>
                 </div>
                 <div className="flex items-start gap-2.5 text-[13px] text-gray-700 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
                   <CheckCircle size={18} strokeWidth={2} className="text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>मृदा स्वास्थ्य कार्ड योजना</span>
+                  <span>{t('help.soilHealth')}</span>
                 </div>
                 <div className="flex items-start gap-2.5 text-[13px] text-gray-700 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
                   <CheckCircle size={18} strokeWidth={2} className="text-green-600 flex-shrink-0 mt-0.5" />
-                  <span>महा DBT किसान योजना</span>
+                  <span>{t('help.mahaDBT')}</span>
                 </div>
               </div>
               <button
@@ -337,7 +339,7 @@ export function HelpPage() {
                          flex items-center justify-center gap-2"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
               >
-                <span>सभी योजनाएं देखें</span>
+                <span>{t('help.viewAllSchemes')}</span>
                 <ChevronRight size={18} strokeWidth={2.5} />
               </button>
             </div>
@@ -345,9 +347,9 @@ export function HelpPage() {
 
           {/* Human Help Section */}
           <div className="px-4 mb-5">
-            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-4"
+            <h2 className="text-[20px] font-bold text-gray-900 leading-[1.3] mb-3"
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              किसान से बात करें
+              {t('help.speakFarmer')}
             </h2>
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
               <div className="flex items-center gap-3 mb-4">
@@ -357,11 +359,11 @@ export function HelpPage() {
                 <div>
                   <h3 className="text-[16px] font-bold text-blue-900 leading-[1.3] mb-0.5"
                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    किसान कॉल सेंटर
+                    {t('help.kisanCallCenter')}
                   </h3>
                   <p className="text-[12px] text-blue-800 leading-[1.4]"
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    कृषि संबंधी सहायता • मुफ्त सेवा
+                    {t('help.freeService')}
                   </p>
                 </div>
               </div>
@@ -373,20 +375,19 @@ export function HelpPage() {
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
               >
                 <Phone size={20} strokeWidth={2} />
-                <span>1800-180-1551 पर कॉल करें</span>
+                <span>{t('help.callNumber')}</span>
               </a>
             </div>
           </div>
 
           {/* Info Note */}
-          <div className="px-4 mb-5">
+          <div className="px-4 mb-4">
             <div className="bg-orange-50 border border-orange-200 rounded-xl p-3.5">
               <div className="flex items-start gap-2">
                 <AlertCircle size={16} strokeWidth={2} className="text-orange-600 flex-shrink-0 mt-0.5" />
                 <p className="text-[12px] text-orange-900 leading-[1.5]"
                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                  <strong>ध्यान दें:</strong> योजनाओं की जानकारी सरकारी स्रोतों से प्राप्त की गई है। 
-                  आवेदन से पहले आधिकारिक वेबसाइट से जानकारी की पुष्टि करें।
+                  <strong>{t('help.note')}:</strong> {t('help.disclaimerText')}
                 </p>
               </div>
             </div>
@@ -424,7 +425,7 @@ export function HelpPage() {
               {loading && (
                 <div className="text-center py-8">
                   <div className="loading-spinner mx-auto mb-2"></div>
-                  <p className="text-[13px] text-gray-600">योजनाएं लोड हो रही हैं...</p>
+                  <p className="text-[13px] text-gray-600">{t('schemes.loading')}</p>
                 </div>
               )}
 
@@ -433,8 +434,7 @@ export function HelpPage() {
                   <div className="flex items-start gap-2 mb-4">
                     <AlertCircle size={20} strokeWidth={2} className="text-yellow-600 flex-shrink-0 mt-0.5" />
                     <p className="text-[13px] text-yellow-900 leading-relaxed">
-                      <strong>जानकारी:</strong> इस श्रेणी के लिए योजना जानकारी जल्द ही उपलब्ध होगी।
-                      अधिक जानकारी के लिए किसान कॉल सेंटर से संपर्क करें।
+                      <strong>{t('help.info')}:</strong> {t('help.schemeComingSoon')}
                     </p>
                   </div>
                   <a
@@ -443,7 +443,7 @@ export function HelpPage() {
                              text-[14px] font-semibold hover:bg-[#0d7436] transition-colors active:scale-[0.98]"
                   >
                     <Phone size={18} strokeWidth={2} />
-                    <span>1800-180-1551 पर कॉल करें</span>
+                    <span>{t('help.callNumber')}</span>
                   </a>
                 </div>
               )}
@@ -523,7 +523,7 @@ export function HelpPage() {
               <div>
                 <h3 className="text-[16px] font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <CheckCircle size={20} strokeWidth={2} className="text-green-600" />
-                  <span>क्या सहायता मिलेगी?</span>
+                  <span>{t('schemes.whatHelp')}</span>
                 </h3>
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4">
                   <p className="text-[14px] text-green-900 font-semibold leading-relaxed">
@@ -541,7 +541,7 @@ export function HelpPage() {
               <div>
                 <h3 className="text-[16px] font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Users size={20} strokeWidth={2} className="text-blue-600" />
-                  <span>कौन पात्र है?</span>
+                  <span>{t('schemes.whoEligible')}</span>
                 </h3>
                 <ul className="space-y-2">
                   {selectedScheme.eligibility.map((item, index) => (
@@ -557,7 +557,7 @@ export function HelpPage() {
               <div>
                 <h3 className="text-[16px] font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <FileText size={20} strokeWidth={2} className="text-orange-600" />
-                  <span>जरूरी दस्तावेज</span>
+                  <span>{t('schemes.requiredDocs')}</span>
                 </h3>
                 <ul className="space-y-2">
                   {selectedScheme.documents.map((doc, index) => (
@@ -573,7 +573,7 @@ export function HelpPage() {
               <div>
                 <h3 className="text-[16px] font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <FileText size={20} strokeWidth={2} className="text-purple-600" />
-                  <span>आवेदन कैसे करें?</span>
+                  <span>{t('schemes.howToApply')}</span>
                 </h3>
                 <ol className="space-y-2.5">
                   {selectedScheme.applicationProcess.map((step, index) => (
@@ -591,7 +591,7 @@ export function HelpPage() {
               {selectedScheme.deadline && (
                 <div>
                   <h3 className="text-[15px] font-bold text-gray-900 mb-2 flex items-center gap-2">
-                    📅 अंतिम तारीख
+                    📅 {t('schemes.deadline')}
                   </h3>
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
                     <p className="text-[13px] text-orange-900">
@@ -604,13 +604,13 @@ export function HelpPage() {
               {/* Source */}
               <div className="pt-4 border-t border-gray-200">
                 <h3 className="text-[13px] font-bold text-gray-900 mb-2">
-                  🔗 स्रोत:
+                  🔗 {t('schemes.sourceUrl')}:
                 </h3>
                 <p className="text-[12px] text-gray-600 mb-1">
                   {selectedScheme.source}
                 </p>
                 <p className="text-[11px] text-gray-500">
-                  अंतिम अपडेट: {selectedScheme.lastUpdated}
+                  {t('help.lastUpdated')}: {selectedScheme.lastUpdated}
                 </p>
               </div>
 
@@ -625,7 +625,7 @@ export function HelpPage() {
                              text-[15px] font-semibold hover:bg-[#0d7436] transition-colors
                              active:scale-[0.98]"
                   >
-                    <span>आवेदन करें</span>
+                    <span>{t('schemes.applyButton')}</span>
                     <ChevronRight size={20} strokeWidth={2.5} />
                   </a>
                   {selectedScheme.statusCheckUrl && (
@@ -637,7 +637,7 @@ export function HelpPage() {
                                text-[14px] font-semibold hover:bg-green-50 transition-colors
                                active:scale-[0.98]"
                     >
-                      <span>आवेदन स्थिति देखें</span>
+                      <span>{t('schemes.statusButton')}</span>
                     </a>
                   )}
                 </div>

@@ -1,6 +1,14 @@
 import { Globe } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export function DashboardHeader() {
+  const language = useLanguage();
+
+  const languageNames: Record<string, string> = {
+    en: 'English',
+    hi: 'हिंदी',
+    mr: 'मराठी'
+  };
 
   const handleLanguageSelection = () => {
     // Clear the language from localStorage to show language selection page
@@ -24,16 +32,18 @@ export function DashboardHeader() {
           </span>
         </div>
         
-        {/* Language Selection Button */}
+        {/* Language Selection Button - Now dynamic */}
         <button
           onClick={handleLanguageSelection}
           className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-lg 
                     bg-[#0b5e2c] text-white text-[13px] font-semibold
                     hover:bg-[#094d24] active:scale-95 transition-all"
           style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
+          title="Change language"
+          aria-label={`Current language: ${languageNames[language]}`}
         >
           <Globe size={17} strokeWidth={2.5} />
-          <span>मराठी</span>
+          <span>{languageNames[language]}</span>
         </button>
       </div>
     </header>

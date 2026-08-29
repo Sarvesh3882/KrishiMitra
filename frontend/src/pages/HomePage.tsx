@@ -3,10 +3,12 @@ import { UpdatesPosterCarousel } from '../components/UpdatesPosterCarousel';
 import { usePosterData } from '../hooks/usePosterData';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingBasket, CloudRain, Users, HelpCircle, Mic, ChevronRight, Home, MessageCircle } from 'lucide-react';
+import { useTranslation } from '../i18n/useTranslation';
 
 export function HomePage() {
   const { posters, loading } = usePosterData();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-[#f5f5f5] flex flex-col">
@@ -19,19 +21,19 @@ export function HomePage() {
         <main className="flex-1 pb-20">
           
           {/* Greeting Section */}
-          <div className="px-4 pt-5 pb-4">
-            <h1 className="text-[27px] font-bold text-gray-900 leading-[1.25] mb-1.5" 
+          <div className="px-4 pt-6 pb-5">
+            <h1 className="text-[26px] font-bold text-gray-900 leading-[1.25] mb-1.5" 
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              नमस्कार, शेतकरी!
+              {t('home.greeting')}
             </h1>
             <p className="text-[14px] text-gray-600 leading-[1.4]" 
                style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              आजचा दिवस चांगला जाऊ दे
+              {t('home.greetingSubtitle')}
             </p>
           </div>
 
           {/* AI Voice Card */}
-          <div className="px-4 mb-5">
+          <div className="px-4 mb-6">
             <button
               onClick={() => navigate('/ai')}
               className="w-full bg-[#0b5e2c] rounded-2xl p-5 
@@ -48,11 +50,11 @@ export function HomePage() {
                 <div className="flex-1 text-left">
                   <h2 className="text-[19px] font-bold text-white leading-[1.3] mb-0.5" 
                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    मला विचारा
+                    {t('home.askKrishiMitra')}
                   </h2>
                   <p className="text-[12px] text-white/90 leading-[1.35]" 
                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    शेती, हवामान, बाजार याबद्दल बोला
+                    {t('home.askKrishiMitraDesc')}
                   </p>
                 </div>
 
@@ -67,7 +69,7 @@ export function HomePage() {
                 <div className="bg-white rounded-full px-5 py-2 inline-flex items-center">
                   <span className="text-[13px] font-semibold text-[#0b5e2c]" 
                         style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                    बोलून विचारा
+                    {t('ask.listen')}
                   </span>
                 </div>
               </div>
@@ -77,10 +79,10 @@ export function HomePage() {
           {/* Section Header: आपल्यासाठी (For You) */}
           {!loading && posters.length > 0 && (
             <>
-              <div className="px-4 mb-4 flex items-center justify-between">
+              <div className="px-4 mb-3 flex items-center justify-between">
                 <h3 className="text-[18px] font-bold text-gray-900" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                  आपल्यासाठी
+                  {t('home.forYou')}
                 </h3>
                 <button
                   onClick={() => navigate('/community')}
@@ -88,28 +90,28 @@ export function HomePage() {
                            hover:underline active:scale-95 transition-all"
                   style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
                 >
-                  सर्व पहा
+                  {t('home.seeAll')}
                   <ChevronRight size={14} strokeWidth={2.5} />
                 </button>
               </div>
 
               {/* Updates Poster Carousel */}
-              <div className="mb-5">
+              <div className="mb-6">
                 <UpdatesPosterCarousel posters={posters} />
               </div>
             </>
           )}
 
           {/* Section Title: मुख्य सेवा (Main Services) */}
-          <div className="px-4 mb-4">
+          <div className="px-4 mb-3">
             <h3 className="text-[18px] font-bold text-gray-900" 
                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-              मुख्य सेवा
+              {t('home.mainServices')}
             </h3>
           </div>
 
           {/* Service Cards Grid */}
-          <div className="grid grid-cols-2 gap-3 px-4 pb-5">
+          <div className="grid grid-cols-2 gap-3 px-4 pb-4">
             {/* बाजार */}
             <button
               onClick={() => navigate('/bazaar')}
@@ -122,11 +124,11 @@ export function HomePage() {
               </div>
               <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
                   style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                बाजार
+                {t('bazaar.title')}
               </h4>
               <p className="text-[12px] text-gray-600 leading-[1.35]" 
                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                आजचे भाव
+                {t('mandi.todayRates')}
               </p>
             </button>
 
@@ -142,11 +144,11 @@ export function HomePage() {
               </div>
               <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
                   style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                हवामान
+                {t('weather.title')}
               </h4>
               <p className="text-[12px] text-gray-600 leading-[1.35]" 
                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                पावसाची माहिती
+                {t('weather.rainWhenQuestion')}
               </p>
             </button>
 
@@ -162,11 +164,11 @@ export function HomePage() {
               </div>
               <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
                   style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                जुड़ा
+                {t('community.title')}
               </h4>
               <p className="text-[12px] text-gray-600 leading-[1.35]" 
                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                शेतकरी समुदाय
+                {t('community.communityDescription')}
               </p>
             </button>
 
@@ -182,11 +184,11 @@ export function HomePage() {
               </div>
               <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
                   style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                मदत
+                {t('help.title')}
               </h4>
               <p className="text-[12px] text-gray-600 leading-[1.35]" 
                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                सरकारी योजना
+                {t('schemes.title')}
               </p>
             </button>
           </div>
@@ -206,7 +208,7 @@ export function HomePage() {
               <Home size={22} strokeWidth={2.5} />
               <span className="text-[11px] font-semibold leading-none" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                होम
+                {t('nav.home')}
               </span>
             </button>
 
@@ -219,7 +221,7 @@ export function HomePage() {
               <ShoppingBasket size={22} strokeWidth={2} />
               <span className="text-[11px] font-medium leading-none" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                बाजार
+                {t('nav.bazaar')}
               </span>
             </button>
 
@@ -232,7 +234,7 @@ export function HomePage() {
               <MessageCircle size={22} strokeWidth={2} />
               <span className="text-[11px] font-medium leading-none" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                बात करें
+                {t('ask.title')}
               </span>
             </button>
 
@@ -245,7 +247,7 @@ export function HomePage() {
               <Users size={22} strokeWidth={2} />
               <span className="text-[11px] font-medium leading-none" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                जुड़ा
+                {t('community.title')}
               </span>
             </button>
 
@@ -258,7 +260,7 @@ export function HomePage() {
               <HelpCircle size={22} strokeWidth={2} />
               <span className="text-[11px] font-medium leading-none" 
                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
-                मदत
+                {t('help.title')}
               </span>
             </button>
           </div>
