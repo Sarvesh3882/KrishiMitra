@@ -1,97 +1,270 @@
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from '../i18n/useTranslation'
+import { DashboardHeader } from '../components/DashboardHeader';
+import { UpdatesPosterCarousel } from '../components/UpdatesPosterCarousel';
+import { usePosterData } from '../hooks/usePosterData';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingBasket, CloudRain, Users, HelpCircle, Mic, ChevronRight, Home, MessageCircle } from 'lucide-react';
 
 export function HomePage() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { posters, loading } = usePosterData();
+  const navigate = useNavigate();
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1
-        style={{
-          fontSize: '24px',
-          fontWeight: 'bold',
-          color: '#0b5e2c',
-          marginBottom: '24px',
-        }}
-      >
-        {t('home.title')}
-      </h1>
+    <div className="min-h-screen bg-[#f5f5f5] flex flex-col">
+      {/* Mobile App Container - Centered on Desktop */}
+      <div className="w-full max-w-[430px] mx-auto bg-[#f5f5f5] min-h-screen flex flex-col relative">
+        
+        <DashboardHeader />
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '16px',
-        }}
-      >
-        <HomeCard
-          title={t('home.whatsAroundMe')}
-          description={t('home.whatsAroundMeDesc')}
-          icon="📍"
-          onClick={() => navigate('/around')}
-        />
-        <HomeCard
-          title={t('home.schemesTraining')}
-          description={t('home.schemesTrainingDesc')}
-          icon="📋"
-          onClick={() => navigate('/schemes')}
-        />
-        <HomeCard
-          title={t('home.community')}
-          description={t('home.communityDesc')}
-          icon="👥"
-          onClick={() => navigate('/community')}
-        />
-        <HomeCard
-          title={t('home.askKrishiMitra')}
-          description={t('home.askKrishiMitraDesc')}
-          icon="💬"
-          onClick={() => navigate('/ask')}
-        />
+        {/* Main Content with Bottom Padding for Nav */}
+        <main className="flex-1 pb-20">
+          
+          {/* Greeting Section */}
+          <div className="px-4 pt-5 pb-4">
+            <h1 className="text-[27px] font-bold text-gray-900 leading-[1.25] mb-1.5" 
+                style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+              नमस्कार, शेतकरी!
+            </h1>
+            <p className="text-[14px] text-gray-600 leading-[1.4]" 
+               style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+              आजचा दिवस चांगला जाऊ दे
+            </p>
+          </div>
+
+          {/* AI Voice Card */}
+          <div className="px-4 mb-5">
+            <button
+              onClick={() => navigate('/ai')}
+              className="w-full bg-[#0b5e2c] rounded-2xl p-5 
+                       hover:shadow-lg active:scale-[0.99] transition-all shadow-md"
+            >
+              {/* Top Row: Icon + Content + Arrow */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                {/* Left: Mic Icon */}
+                <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Mic size={28} strokeWidth={2.5} className="text-white" />
+                </div>
+
+                {/* Center: Content */}
+                <div className="flex-1 text-left">
+                  <h2 className="text-[19px] font-bold text-white leading-[1.3] mb-0.5" 
+                      style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                    मला विचारा
+                  </h2>
+                  <p className="text-[12px] text-white/90 leading-[1.35]" 
+                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                    शेती, हवामान, बाजार याबद्दल बोला
+                  </p>
+                </div>
+
+                {/* Right: Arrow Button */}
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                  <ChevronRight size={24} strokeWidth={3} className="text-[#0b5e2c]" />
+                </div>
+              </div>
+
+              {/* Bottom: Voice Button */}
+              <div className="flex justify-center">
+                <div className="bg-white rounded-full px-5 py-2 inline-flex items-center">
+                  <span className="text-[13px] font-semibold text-[#0b5e2c]" 
+                        style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                    बोलून विचारा
+                  </span>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          {/* Section Header: आपल्यासाठी (For You) */}
+          {!loading && posters.length > 0 && (
+            <>
+              <div className="px-4 mb-4 flex items-center justify-between">
+                <h3 className="text-[18px] font-bold text-gray-900" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                  आपल्यासाठी
+                </h3>
+                <button
+                  onClick={() => navigate('/community')}
+                  className="text-[12px] font-semibold text-[#0b5e2c] flex items-center gap-0.5
+                           hover:underline active:scale-95 transition-all"
+                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}
+                >
+                  सर्व पहा
+                  <ChevronRight size={14} strokeWidth={2.5} />
+                </button>
+              </div>
+
+              {/* Updates Poster Carousel */}
+              <div className="mb-5">
+                <UpdatesPosterCarousel posters={posters} />
+              </div>
+            </>
+          )}
+
+          {/* Section Title: मुख्य सेवा (Main Services) */}
+          <div className="px-4 mb-4">
+            <h3 className="text-[18px] font-bold text-gray-900" 
+                style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+              मुख्य सेवा
+            </h3>
+          </div>
+
+          {/* Service Cards Grid */}
+          <div className="grid grid-cols-2 gap-3 px-4 pb-5">
+            {/* बाजार */}
+            <button
+              onClick={() => navigate('/bazaar')}
+              className="bg-white rounded-2xl border border-gray-200 p-5
+                       hover:border-[#0b5e2c] hover:shadow-sm transition-all
+                       active:scale-[0.98] flex flex-col items-center text-center h-full"
+            >
+              <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                <ShoppingBasket size={32} strokeWidth={2} className="text-[#0b5e2c]" />
+              </div>
+              <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
+                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                बाजार
+              </h4>
+              <p className="text-[12px] text-gray-600 leading-[1.35]" 
+                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                आजचे भाव
+              </p>
+            </button>
+
+            {/* हवामान */}
+            <button
+              onClick={() => navigate('/weather')}
+              className="bg-white rounded-2xl border border-gray-200 p-5
+                       hover:border-[#0b5e2c] hover:shadow-sm transition-all
+                       active:scale-[0.98] flex flex-col items-center text-center h-full"
+            >
+              <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                <CloudRain size={32} strokeWidth={2} className="text-[#0b5e2c]" />
+              </div>
+              <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
+                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                हवामान
+              </h4>
+              <p className="text-[12px] text-gray-600 leading-[1.35]" 
+                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                पावसाची माहिती
+              </p>
+            </button>
+
+            {/* जुड़ा */}
+            <button
+              onClick={() => navigate('/community')}
+              className="bg-white rounded-2xl border border-gray-200 p-5
+                       hover:border-[#0b5e2c] hover:shadow-sm transition-all
+                       active:scale-[0.98] flex flex-col items-center text-center h-full"
+            >
+              <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                <Users size={32} strokeWidth={2} className="text-[#0b5e2c]" />
+              </div>
+              <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
+                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                जुड़ा
+              </h4>
+              <p className="text-[12px] text-gray-600 leading-[1.35]" 
+                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                शेतकरी समुदाय
+              </p>
+            </button>
+
+            {/* मदत */}
+            <button
+              onClick={() => navigate('/help')}
+              className="bg-white rounded-2xl border border-gray-200 p-5
+                       hover:border-[#0b5e2c] hover:shadow-sm transition-all
+                       active:scale-[0.98] flex flex-col items-center text-center h-full"
+            >
+              <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                <HelpCircle size={32} strokeWidth={2} className="text-[#0b5e2c]" />
+              </div>
+              <h4 className="text-[16px] font-bold text-gray-900 leading-[1.3] mb-1" 
+                  style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                मदत
+              </h4>
+              <p className="text-[12px] text-gray-600 leading-[1.35]" 
+                 style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                सरकारी योजना
+              </p>
+            </button>
+          </div>
+        </main>
+
+        {/* Bottom Navigation - Fixed */}
+        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 
+                      max-w-[430px] mx-auto" 
+             style={{ boxShadow: '0 -2px 8px rgba(0, 0, 0, 0.05)' }}>
+          <div className="grid grid-cols-5 h-16">
+            {/* होम */}
+            <button
+              onClick={() => navigate('/')}
+              className="flex flex-col items-center justify-center gap-1 
+                       bg-[#e6f7f0] text-[#0b5e2c] active:bg-[#d1f0e3] transition-colors"
+            >
+              <Home size={22} strokeWidth={2.5} />
+              <span className="text-[11px] font-semibold leading-none" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                होम
+              </span>
+            </button>
+
+            {/* बाजार */}
+            <button
+              onClick={() => navigate('/bazaar')}
+              className="flex flex-col items-center justify-center gap-1 
+                       text-gray-600 hover:text-gray-900 active:bg-gray-50 transition-colors"
+            >
+              <ShoppingBasket size={22} strokeWidth={2} />
+              <span className="text-[11px] font-medium leading-none" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                बाजार
+              </span>
+            </button>
+
+            {/* बात करें */}
+            <button
+              onClick={() => navigate('/ai')}
+              className="flex flex-col items-center justify-center gap-1 
+                       text-gray-600 hover:text-gray-900 active:bg-gray-50 transition-colors"
+            >
+              <MessageCircle size={22} strokeWidth={2} />
+              <span className="text-[11px] font-medium leading-none" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                बात करें
+              </span>
+            </button>
+
+            {/* जुड़ा */}
+            <button
+              onClick={() => navigate('/community')}
+              className="flex flex-col items-center justify-center gap-1 
+                       text-gray-600 hover:text-gray-900 active:bg-gray-50 transition-colors"
+            >
+              <Users size={22} strokeWidth={2} />
+              <span className="text-[11px] font-medium leading-none" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                जुड़ा
+              </span>
+            </button>
+
+            {/* मदत */}
+            <button
+              onClick={() => navigate('/help')}
+              className="flex flex-col items-center justify-center gap-1 
+                       text-gray-600 hover:text-gray-900 active:bg-gray-50 transition-colors"
+            >
+              <HelpCircle size={22} strokeWidth={2} />
+              <span className="text-[11px] font-medium leading-none" 
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                मदत
+              </span>
+            </button>
+          </div>
+        </nav>
+
       </div>
     </div>
-  )
-}
-
-interface HomeCardProps {
-  title: string
-  description: string
-  icon: string
-  onClick: () => void
-}
-
-function HomeCard({ title, description, icon, onClick }: HomeCardProps) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        backgroundColor: '#ffffff',
-        border: '2px solid #e0e0e0',
-        borderRadius: '8px',
-        padding: '24px 16px',
-        minHeight: '140px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-      }}
-    >
-      <div style={{ fontSize: '40px', marginBottom: '12px' }}>{icon}</div>
-      <div
-        style={{
-          fontSize: '16px',
-          fontWeight: 'bold',
-          color: '#0b5e2c',
-          marginBottom: '8px',
-        }}
-      >
-        {title}
-      </div>
-      <div style={{ fontSize: '12px', color: '#666' }}>{description}</div>
-    </button>
-  )
+  );
 }

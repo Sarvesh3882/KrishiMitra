@@ -5,6 +5,10 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Suppress web vitals errors in development
+  define: {
+    __VITE_WEB_VITALS__: false,
+  },
   plugins: [
     react(),
     tailwindcss(),
@@ -12,6 +16,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{html,css,js,ico,png,svg,json}'],
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB to accommodate large poster images
       },
       manifest: {
         name: 'KrishiMitra',
