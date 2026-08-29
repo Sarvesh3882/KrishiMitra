@@ -370,15 +370,6 @@ Contributions are welcome! Please follow these guidelines:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is developed as a prototype for [Hackathon Name] by Team Airavata.
-
-## 👥 Team Airavata
-
-- [Team Member Names]
-- [Contact Information]
-
 ## 🙏 Acknowledgments
 
 - Government of India - Design guidelines and data sources
@@ -392,8 +383,7 @@ This project is developed as a prototype for [Hackathon Name] by Team Airavata.
 ## 📞 Support
 
 For questions or support:
-- Email: [team email]
-- GitHub Issues: [repo issues link]
+- Email: codex5622@gmail.com
 - Kisan Call Centre: 1800-180-1551
 
 ---
