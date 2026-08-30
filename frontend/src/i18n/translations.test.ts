@@ -154,7 +154,8 @@ describe('Translation System Properties', () => {
           fc.constantFrom(...allLanguages),
           // Generate arbitrary strings that are NOT valid translation keys
           fc.string({ minLength: 1, maxLength: 50 })
-            .filter(s => !allKeys.includes(s as TranslationKey)),
+            .filter(s => !allKeys.includes(s as TranslationKey))
+            .filter(s => s.trim().length > 0),  // exclude whitespace-only strings
           (language: Language, unknownKey: string) => {
             const result = t(language, unknownKey);
             

@@ -1,0 +1,66 @@
+[
+  {
+    "commodity": "Egg",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Fish",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Rohu",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Katla",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Chicken",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Broiler",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Mutton",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  },
+  {
+    "commodity": "Goat",
+    "status": "TIMEOUT",
+    "http_status": null,
+    "total_records": null,
+    "exact_commodity_name": null,
+    "sample_record": null
+  }
+]

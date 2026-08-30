@@ -1,8 +1,53 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GovHeader } from '../components/GovHeader';
+import { DashboardHeader } from '../components/DashboardHeader';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useTranslation } from '../i18n/useTranslation';
+import { ChevronRight, Store } from 'lucide-react';
+
+// Commodity name translations
+const COMMODITY_NAMES: Record<string, Record<string, string>> = {
+  en: {
+    Onion: 'Onion', Tomato: 'Tomato', Potato: 'Potato', Cotton: 'Cotton',
+    Sugarcane: 'Sugarcane', Wheat: 'Wheat', Rice: 'Rice', Bajra: 'Bajra',
+    Jowar: 'Jowar', Groundnut: 'Groundnut', Soyabean: 'Soyabean',
+    Chilli: 'Chilli', Turmeric: 'Turmeric', Garlic: 'Garlic', Ginger: 'Ginger',
+    Cabbage: 'Cabbage', Cauliflower: 'Cauliflower', Coriander: 'Coriander',
+  },
+  hi: {
+    Onion: 'प्याज', Tomato: 'टमाटर', Potato: 'आलू', Cotton: 'कपास',
+    Sugarcane: 'गन्ना', Wheat: 'गेहूँ', Rice: 'चावल', Bajra: 'बाजरा',
+    Jowar: 'ज्वार', Groundnut: 'मूंगफली', Soyabean: 'सोयाबीन',
+    Chilli: 'मिर्च', Turmeric: 'हल्दी', Garlic: 'लहसुन', Ginger: 'अदरक',
+    Cabbage: 'पत्तागोभी', Cauliflower: 'फूलगोभी', Coriander: 'धनिया',
+  },
+  mr: {
+    Onion: 'कांदा', Tomato: 'टोमॅटो', Potato: 'बटाटा', Cotton: 'कापूस',
+    Sugarcane: 'ऊस', Wheat: 'गहू', Rice: 'तांदूळ', Bajra: 'बाजरी',
+    Jowar: 'ज्वारी', Groundnut: 'भुईमूग', Soyabean: 'सोयाबीन',
+    Chilli: 'मिरची', Turmeric: 'हळद', Garlic: 'लसूण', Ginger: 'आले',
+    Cabbage: 'कोबी', Cauliflower: 'फ्लॉवर', Coriander: 'कोथिंबीर',
+  },
+};
+
+// Season translations
+const SEASON_NAMES: Record<string, Record<string, string>> = {
+  en: {
+    Kharif: 'Kharif', Rabi: 'Rabi', 'Year-round': 'Year-round',
+    'Year-round with peaks Jun-Aug': 'Year-round (peaks Jun–Aug)',
+    'Year-round with peaks Oct-Feb': 'Year-round (peaks Oct–Feb)',
+  },
+  hi: {
+    Kharif: 'खरीफ', Rabi: 'रबी', 'Year-round': 'वर्ष भर',
+    'Year-round with peaks Jun-Aug': 'वर्ष भर (जून–अगस्त)',
+    'Year-round with peaks Oct-Feb': 'वर्ष भर (अक्टूबर–फरवरी)',
+  },
+  mr: {
+    Kharif: 'खरीप', Rabi: 'रब्बी', 'Year-round': 'वर्षभर',
+    'Year-round with peaks Jun-Aug': 'वर्षभर (जून–ऑगस्ट)',
+    'Year-round with peaks Oct-Feb': 'वर्षभर (ऑक्टोबर–फेब्रुवारी)',
+  },
+};
 
 // Kopergaon location
 const LOCATION = {
@@ -46,7 +91,31 @@ interface MandiPrice {
 
 export function WhatsAroundMePage() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+
+  // Translate commodity name and season from API English → current language
+  const translateCommodity = (name: string) =>
+    COMMODITY_NAMES[language]?.[name] ?? COMMODITY_NAMES['en']?.[name] ?? name;
+
+  const translateSeason = (season: string) => {
+    if (!season) return '';
+    const base = season.split('(')[0].trim();
+    return SEASON_NAMES[language]?.[base] ?? SEASON_NAMES[language]?.[season] ?? base;
+  };
+
+  // Reverse-lookup: convert Hindi/Marathi input back to English for API
+  const toEnglishCommodity = (input: string): string => {
+    const trimmed = input.trim();
+    // Check all languages for a match → return the English key
+    for (const lang of ['hi', 'mr'] as const) {
+      const map = COMMODITY_NAMES[lang];
+      const entry = Object.entries(map).find(
+        ([, localName]) => localName.toLowerCase() === trimmed.toLowerCase()
+      );
+      if (entry) return entry[0]; // return English key
+    }
+    return trimmed; // already English or unknown
+  };
   const [prices, setPrices] = useState<MandiPrice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -156,13 +225,13 @@ export function WhatsAroundMePage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      searchCrop(searchQuery);
+      searchCrop(toEnglishCommodity(searchQuery));
     }
   };
 
   const handleQuickSearch = (crop: string) => {
     setSearchQuery(crop);
-    searchCrop(crop);
+    searchCrop(crop); // quick search chips always send English keys directly
   };
 
   const handleBackToFeed = () => {
@@ -186,7 +255,7 @@ export function WhatsAroundMePage() {
       case 'down':
         return { icon: '↓', color: 'text-red-600', bg: 'bg-red-50', label: t('error.dataUnavailable') };
       case 'same':
-        return { icon: '→', color: 'text-gray-600', bg: 'bg-gray-50', label: 'Stable' };
+        return { icon: '—', color: 'text-gray-600', bg: 'bg-gray-50', label: '' };
       default:
         return null;
     }
@@ -199,112 +268,145 @@ export function WhatsAroundMePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex flex-col">
-      <GovHeader />
-      
-      <main className="flex-1 content-with-nav">
-        {/* Header Section */}
-        <div className="bg-white border-b-4 border-[#0b5e2c]">
-          <div className="max-w-[420px] mx-auto px-4 py-4">
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-[22px] font-bold text-[#0b5e2c]">
-                📍 {t('home.whatsAroundMe')}
-              </h1>
-              <div className="text-right">
-                <div className="text-[13px] font-semibold text-gray-900">{LOCATION.name}</div>
-                <div className="text-[11px] text-gray-600">{LOCATION.district}, {LOCATION.state}</div>
-              </div>
-            </div>
-            <div className="text-[13px] text-gray-600">
-              {t('mandi.todayRates')}
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#f5f5f5] flex flex-col">
+      {/* Mobile App Container - Centered on Desktop */}
+      <div className="w-full max-w-[430px] mx-auto bg-[#f5f5f5] min-h-screen flex flex-col relative">
+        
+        <DashboardHeader />
 
-        {/* Content Area */}
-        <div className="max-w-[420px] mx-auto px-4 py-4">
-          {/* Search Bar */}
-          <div className="bg-white rounded-lg p-3 mb-4 shadow-sm border border-gray-200">
-            <form onSubmit={handleSearch} className="mb-3">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t('mandi.searchPlaceholder')}
-                  className="w-full px-4 py-3 pr-24 border-2 border-gray-200 rounded-lg 
-                            focus:outline-none focus:border-[#0b5e2c] text-[14px]"
-                />
-                <button
-                  type="submit"
-                  disabled={!searchQuery.trim() || loading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 
-                            px-4 py-2 bg-[#0b5e2c] text-white rounded-lg text-[13px] font-semibold
-                            disabled:opacity-50 disabled:cursor-not-allowed
-                            hover:bg-[#094d24] transition-colors"
-                >
-                  {t('mandi.search')}
-                </button>
-              </div>
-            </form>
-
-            {/* Quick Search Buttons */}
-            <div className="flex flex-wrap gap-2">
-              {ALL_CROPS.slice(0, 8).map((crop) => (
-                <button
-                  key={crop}
-                  onClick={() => handleQuickSearch(crop)}
-                  disabled={loading}
-                  className="px-3 py-1.5 bg-gray-100 hover:bg-[#0b5e2c] hover:text-white
-                            text-[12px] rounded-full transition-colors
-                            disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {crop}
-                </button>
-              ))}
-            </div>
-
-            {/* Back to Feed Button (when searching) */}
-            {isSearching && (
-              <button
-                onClick={handleBackToFeed}
-                className="mt-3 w-full py-2 text-[13px] text-[#0b5e2c] font-semibold
-                          border-2 border-[#0b5e2c] rounded-lg hover:bg-green-50 transition-colors"
-              >
-                ← {t('mandi.backToFeed')}
-              </button>
-            )}
-          </div>
-
-          {/* Allied Farming Bazar Card */}
-          <div 
-            onClick={() => navigate('/around/allied-bazar')}
-            className="bg-gradient-to-br from-[#0b5e2c] to-[#094d24] rounded-lg p-4 mb-4 
-                      shadow-md border-2 border-[#0b5e2c] cursor-pointer
-                      hover:shadow-lg hover:scale-[1.02] transition-all"
-          >
-            <div className="flex items-center gap-3">
-              <div className="text-[48px]">🏪</div>
-              <div className="flex-1">
-                <h3 className="text-white font-bold text-[16px] mb-1">
-                  {t('allied.title')}
-                </h3>
-                <p className="text-white/90 text-[12px] leading-relaxed">
-                  {t('allied.subtitle')}
-                </p>
-                <div className="mt-2 flex items-center gap-2 text-[11px] text-white/80">
-                  <span>🥚 Eggs</span>
-                  <span>•</span>
-                  <span>🐔 Poultry</span>
-                  <span>•</span>
-                  <span>🐟 Fish</span>
-                  <span>•</span>
-                  <span>🥛 Dairy</span>
+        <main className="flex-1 pb-20">
+          {/* Page Title Row */}
+          <div className="bg-white border-b border-gray-200 px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-[22px] font-bold text-gray-900 leading-tight"
+                    style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                  {t('home.whatsAroundMe')}
+                </h1>
+                <div className="text-[13px] text-gray-500 mt-0.5"
+                     style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                  {t('mandi.todayRates')}
                 </div>
               </div>
-              <div className="text-white text-[24px]">→</div>
+              <div className="text-right">
+                <div className="text-[13px] font-semibold text-gray-900">{LOCATION.name}</div>
+                <div className="text-[11px] text-gray-500">{LOCATION.district}, {LOCATION.state}</div>
+              </div>
             </div>
           </div>
+
+          {/* Content Area */}
+          <div className="px-4 py-4">
+
+            {/* ── Search Block ── */}
+            <div className="mb-5">
+
+              {/* Search row */}
+              <form onSubmit={handleSearch}>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t('mandi.searchPlaceholder')}
+                    className="flex-1 px-4 py-3 bg-white border-2 border-gray-100 rounded-2xl
+                              shadow-sm focus:outline-none focus:border-[#0b5e2c]
+                              text-[14px] text-gray-800 placeholder:text-gray-400 transition-colors"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!searchQuery.trim() || loading}
+                    className="px-5 py-3 bg-[#0b5e2c] text-white rounded-2xl text-[13px] font-bold
+                              shadow-md hover:bg-[#094d24] active:scale-95 transition-all
+                              disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0
+                              tracking-wide"
+                  >
+                    {t('mandi.search')}
+                  </button>
+                </div>
+              </form>
+
+              {/* Crop suggestion chips */}
+              <div className="flex flex-wrap gap-2 mt-3">
+                {ALL_CROPS.slice(0, 8).map((crop) => {
+                  const isActive = searchQuery === crop;
+                  return (
+                    <button
+                      key={crop}
+                      onClick={() => handleQuickSearch(crop)}
+                      disabled={loading}
+                      className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold
+                                border transition-all active:scale-95
+                                disabled:opacity-40 disabled:cursor-not-allowed
+                                ${isActive
+                                  ? 'bg-[#0b5e2c] text-white border-[#0b5e2c] shadow-sm'
+                                  : 'bg-white text-[#0b5e2c] border-[#0b5e2c]/30 hover:bg-[#0b5e2c]/5 hover:border-[#0b5e2c]'
+                                }`}
+                    >
+                      {translateCommodity(crop)}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Back link */}
+              {isSearching && (
+                <button
+                  onClick={handleBackToFeed}
+                  className="mt-3 inline-flex items-center gap-1 text-[13px] text-[#0b5e2c] font-semibold
+                            hover:underline"
+                >
+                  ← {t('mandi.backToFeed')}
+                </button>
+              )}
+            </div>
+
+            {/* ── Allied Farming Banner ── */}
+            <button
+              onClick={() => navigate('/around/allied-bazar')}
+              className="w-full mb-5 rounded-2xl overflow-hidden shadow-sm
+                        active:scale-[0.99] transition-all text-left border border-[#0a5228]"
+              style={{ background: 'linear-gradient(135deg, #0b5e2c 0%, #1a8a45 100%)' }}
+            >
+              <div className="p-4 flex items-center gap-4">
+                {/* Clean icon — no blur/glow */}
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0
+                                bg-white/15">
+                  <Store size={24} strokeWidth={1.8} className="text-white" />
+                </div>
+
+                {/* Text */}
+                <div className="flex-1 min-w-0">
+                  <div className="text-white font-bold text-[16px] leading-tight mb-0.5"
+                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                    {t('allied.title')}
+                  </div>
+                  <div className="text-white/75 text-[12px] leading-snug mb-2"
+                       style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+                    {t('allied.subtitle')}
+                  </div>
+                  {/* Category pills */}
+                  <div className="flex gap-1.5">
+                    {[
+                      { e: '🥚', label: t('enterprise.poultry') },
+                      { e: '🐟', label: t('enterprise.fisheries') },
+                      { e: '🥛', label: t('enterprise.dairy') },
+                    ].map(({ e, label }) => (
+                      <span key={label}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full
+                                   bg-white/15 text-white text-[11px] font-medium">
+                        {e} {label}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex-shrink-0">
+                  <ChevronRight size={20} strokeWidth={2.5} className="text-white/80" />
+                </div>
+              </div>
+            </button>
 
           {/* Loading */}
           {loading && (
@@ -343,7 +445,7 @@ export function WhatsAroundMePage() {
                 </div>
                 <div className="flex items-center gap-1 text-[11px] bg-green-50 text-green-700 px-2 py-1 rounded">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  Live
+                  {t('mandi.latestUpdates')}
                 </div>
               </div>
 
@@ -372,7 +474,7 @@ export function WhatsAroundMePage() {
                       <div className="flex items-end justify-between">
                         <div>
                           <h3 className="text-white font-bold text-[18px] mb-1 drop-shadow-lg">
-                            {price.commodity}
+                            {translateCommodity(price.commodity)}
                             {price.variety && price.variety !== 'Other' && (
                               <span className="text-[13px] font-normal ml-2 opacity-90">
                                 ({price.variety})
@@ -454,7 +556,7 @@ export function WhatsAroundMePage() {
                     <div className="flex items-center justify-between text-[11px] text-gray-500 pt-2 border-t">
                       <div>
                         {price.season && (
-                          <span className="text-gray-700 font-medium">{price.season.split('(')[0].trim()}</span>
+                          <span className="text-gray-700 font-medium">{translateSeason(price.season)}</span>
                         )}
                       </div>
                       <div>
@@ -481,7 +583,7 @@ export function WhatsAroundMePage() {
                 {t('mandi.unavailable')}
               </p>
               <p className="text-gray-500 text-[12px]">
-                for {LOCATION.name} right now
+                {t('general.noDataDescription')}
               </p>
               <button
                 onClick={fetchAllPrices}
@@ -493,6 +595,7 @@ export function WhatsAroundMePage() {
           )}
         </div>
       </main>
+      </div>
     </div>
   );
 }

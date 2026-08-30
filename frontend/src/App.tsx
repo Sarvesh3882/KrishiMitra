@@ -1,57 +1,70 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { AuthProvider } from './contexts/AuthContext'
-import { LanguageProvider } from './contexts/LanguageContext'
-import { AppShell } from './components/AppShell'
-import { ProtectedRoute } from './components/ProtectedRoute'
-import { SignInPage } from './pages/SignInPage'
-import { SignUpPage } from './pages/SignUpPage'
-import { HomePage } from './pages/HomePage'
-import { ProfilePage } from './pages/ProfilePage'
-import { LanguageSelectionPage } from './pages/LanguageSelectionPage'
-import { WhatsAroundMePage } from './pages/WhatsAroundMePage'
-import { MarketLinkagePage } from './pages/MarketLinkagePage'
-import { isSupabaseConfigured } from './lib/supabaseClient'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { AuthProvider } from './contexts/AuthContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { LanguageSelectionPage } from './pages/LanguageSelectionPage';
+import { HomePage } from './pages/HomePage';
+import { WhatsAroundMePage } from './pages/WhatsAroundMePage';
+import { CommunityPage } from './pages/CommunityPage';
+import { EventDetailsPage } from './pages/EventDetailsPage';
+import { AlliedGuideDetailsPage } from './pages/AlliedGuideDetailsPage';
+import MarketLinkagePage from './pages/MarketLinkagePage';
+import { BazaarPage } from './pages/BazaarPage';
+import { WeatherPage } from './pages/WeatherPage';
+import { HelpPage } from './pages/HelpPage';
+import { AlliedBazarPage } from './pages/AlliedBazarPage';
+import { AIChatPage } from './pages/AIChatPage';
+import { SignInPage } from './pages/SignInPage';
+import { OnboardingPage } from './pages/OnboardingPage';
 
 function AppRouter() {
-  const [showLanguageSelection, setShowLanguageSelection] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [showLanguageSelection, setShowLanguageSelection] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const lang = localStorage.getItem('language')
+    const lang = localStorage.getItem('language');
     if (!lang) {
-      setShowLanguageSelection(true)
+      localStorage.setItem('language', 'mr');
+      setShowLanguageSelection(false);
+    } else {
+      setShowLanguageSelection(false);
     }
-    setLoading(false)
-  }, [])
+    setLoading(false);
+  }, []);
 
   if (loading) {
-    return null
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5]">
+        <div className="loading-spinner" />
+      </div>
+    );
   }
 
   if (showLanguageSelection) {
-    return <LanguageSelectionPage />
-  }
-
-  // Demo mode: Skip auth if Supabase not configured
-  const DemoWrapper = ({ children }: { children: React.ReactNode }) => {
-    if (!isSupabaseConfigured) {
-      return <AppShell>{children}</AppShell>
-    }
-    return <ProtectedRoute><AppShell>{children}</AppShell></ProtectedRoute>
+    return <LanguageSelectionPage />;
   }
 
   return (
     <Routes>
-      <Route path="/signin" element={<SignInPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/profile" element={<DemoWrapper><ProfilePage /></DemoWrapper>} />
-      <Route path="/around" element={<DemoWrapper><WhatsAroundMePage /></DemoWrapper>} />
-      <Route path="/market" element={<DemoWrapper><MarketLinkagePage /></DemoWrapper>} />
-      <Route path="/" element={<DemoWrapper><HomePage /></DemoWrapper>} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* Auth */}
+      <Route path="/signin"     element={<SignInPage />} />
+      <Route path="/onboarding" element={<OnboardingPage />} />
+
+      {/* Main app — all accessible without login (guest mode) */}
+      <Route path="/"                              element={<HomePage />} />
+      <Route path="/ai"                            element={<AIChatPage />} />
+      <Route path="/around"                        element={<WhatsAroundMePage />} />
+      <Route path="/around/allied-bazar"           element={<AlliedBazarPage />} />
+      <Route path="/community"                     element={<CommunityPage />} />
+      <Route path="/community/event/:eventId"      element={<EventDetailsPage />} />
+      <Route path="/community/guide/:guideId"      element={<AlliedGuideDetailsPage />} />
+      <Route path="/market"                        element={<MarketLinkagePage />} />
+      <Route path="/bazaar"                        element={<BazaarPage />} />
+      <Route path="/weather"                       element={<WeatherPage />} />
+      <Route path="/help"                          element={<HelpPage />} />
+      <Route path="*"                              element={<Navigate to="/" replace />} />
     </Routes>
-  )
+  );
 }
 
 function App() {
@@ -63,7 +76,7 @@ function App() {
         </LanguageProvider>
       </AuthProvider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

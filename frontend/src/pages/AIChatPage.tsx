@@ -441,7 +441,7 @@ export function AIChatPage() {
         
         <main className="flex-1 flex flex-col">
           {/* Header */}
-          <div className="bg-white border-b border-gray-200 px-4 py-4">
+          <div className="bg-white border-b border-gray-200 px-4 py-3.5">
             <div className="max-w-[420px] mx-auto flex items-center justify-between">
               <button
                 onClick={() => navigate(-1)}
@@ -574,7 +574,7 @@ export function AIChatPage() {
         </div>
         
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-4 py-5 max-w-[420px] mx-auto w-full">
+        <div className="flex-1 overflow-y-auto px-4 py-4 max-w-[420px] mx-auto w-full">
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
               <div className="w-20 h-20 bg-green-50 rounded-2xl flex items-center justify-center mb-4">
@@ -661,7 +661,7 @@ export function AIChatPage() {
         )}
         
         {/* Input Area */}
-        <div className="bg-white border-t border-gray-200 px-4 py-4 safe-area-bottom">
+        <div className="bg-white border-t border-gray-200 px-4 py-3 safe-area-bottom">
           <form onSubmit={sendTextMessage} className="max-w-[420px] mx-auto flex items-center gap-3">
             <input
               type="text"

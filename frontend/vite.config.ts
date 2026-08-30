@@ -16,7 +16,6 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{html,css,js,ico,png,svg,json}'],
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB to accommodate large poster images
       },
       manifest: {
         name: 'KrishiMitra',

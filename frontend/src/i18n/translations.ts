@@ -28,6 +28,14 @@ export type TranslationKey =
   | 'auth.forgotPassword' | 'auth.signingIn' | 'auth.signingUp' | 'auth.error'
   | 'auth.signInError' | 'auth.signUpError' | 'auth.noAccount' | 'auth.hasAccount'
   | 'auth.passwordHint'
+  | 'auth.welcome' | 'auth.welcomeSubtitle' | 'auth.enterPhone' | 'auth.phoneHint'
+  | 'auth.phoneInvalid' | 'auth.sendOtp' | 'auth.step1of2' | 'auth.step2of2'
+  | 'auth.enterOtp' | 'auth.otpSentTo' | 'auth.otpInvalid' | 'auth.verifyOtp'
+  | 'auth.resendOtp' | 'auth.resendIn' | 'auth.otpDisclaimer' | 'auth.skipForNow'
+  | 'auth.setupProfile' | 'auth.setupSubtitle' | 'auth.stepName' | 'auth.stepLocation'
+  | 'auth.stepEnterprise' | 'auth.whatsYourName' | 'auth.nameHint'
+  | 'auth.whereAreYou' | 'auth.locationHint' | 'auth.whatDoYouFarm'
+  | 'auth.enterpriseHint' | 'auth.saveAndStart' | 'auth.profileSaved' | 'auth.welcomeToApp'
   // Profile
   | 'profile.title' | 'profile.fullName' | 'profile.phone' | 'profile.state'
   | 'profile.district' | 'profile.taluka' | 'profile.village' | 'profile.enterpriseType'
@@ -97,7 +105,7 @@ export type TranslationKey =
   | 'market.locationsFound' | 'market.sellToGovt' | 'market.govDescription'
   | 'market.sellToOrganizations' | 'market.orgDescription' | 'market.comingSoon'
   | 'market.dataSource' | 'market.poweredBy' | 'market.noNearbyLocations'
-  | 'market.newSearch' | 'market.sellOptions'
+  | 'market.newSearch' | 'market.sellOptions' | 'market.getDirections'
   // Allied Farming / Bazaar
   | 'bazaar.title' | 'bazaar.subtitle' | 'bazaar.seePrices' | 'bazaar.seePricesDesc'
   | 'bazaar.sell' | 'bazaar.sellDesc' | 'bazaar.tip' | 'bazaar.tipText'
@@ -115,6 +123,7 @@ export type TranslationKey =
   | 'community.sampleBadge' | 'community.alliedFarmingGuides' | 'community.guideDescription'
   | 'community.communityTitle' | 'community.communityDescription'
   | 'community.sampleLink' | 'community.joinBeforeEntering' | 'community.tip'
+  | 'community.organizer' | 'community.learnMore' | 'community.joinWhatsApp'
   // Events & Details
   | 'event.notFound' | 'event.back' | 'event.details' | 'event.whatYouLearn'
   | 'event.whoCanAttend' | 'event.registration' | 'event.contact' | 'event.note'
@@ -176,7 +185,7 @@ const en: Record<TranslationKey, string> = {
   // Home screen
   'home.title': 'KrishiMitra',
   'home.subtitle': 'Your agricultural advisor',
-  'home.greeting': 'नमस्ते, किसान!',
+  'home.greeting': 'Namaste Kissan!',
   'home.greetingSubtitle': 'Welcome to your agricultural companion',
   'home.whatsAroundMe': "What's Around Me",
   'home.whatsAroundMeDesc': 'Weather, mandi prices & local needs',
@@ -213,6 +222,38 @@ const en: Record<TranslationKey, string> = {
   'auth.noAccount': "Don't have an account?",
   'auth.hasAccount': 'Already have an account?',
   'auth.passwordHint': 'Minimum 6 characters',
+  // New phone OTP auth
+  'auth.welcome': 'Welcome to KrishiMitra',
+  'auth.welcomeSubtitle': 'Your agriculture companion',
+  'auth.enterPhone': 'Enter your mobile number',
+  'auth.phoneHint': 'We will send a one-time password (OTP) to verify',
+  'auth.phoneInvalid': 'Please enter a valid 10-digit mobile number',
+  'auth.sendOtp': 'Send OTP',
+  'auth.step1of2': 'Step 1 of 2',
+  'auth.step2of2': 'Step 2 of 2',
+  'auth.enterOtp': 'Enter OTP',
+  'auth.otpSentTo': 'OTP sent to',
+  'auth.otpInvalid': 'Please enter the 6-digit OTP',
+  'auth.verifyOtp': 'Verify & Continue',
+  'auth.resendOtp': 'Resend OTP',
+  'auth.resendIn': 'Resend in',
+  'auth.otpDisclaimer': 'Standard SMS rates may apply. Your number is used only for login.',
+  'auth.skipForNow': 'Skip for now',
+  // Onboarding
+  'auth.setupProfile': 'Set up your profile',
+  'auth.setupSubtitle': 'Help us personalise your experience',
+  'auth.stepName': 'Name',
+  'auth.stepLocation': 'Location',
+  'auth.stepEnterprise': 'Enterprise',
+  'auth.whatsYourName': "What's your name?",
+  'auth.nameHint': 'Enter your full name as on Aadhaar',
+  'auth.whereAreYou': 'Where are you located?',
+  'auth.locationHint': 'Enter your village and district',
+  'auth.whatDoYouFarm': 'What do you farm?',
+  'auth.enterpriseHint': 'Select your main agricultural enterprise',
+  'auth.saveAndStart': 'Save & Start',
+  'auth.profileSaved': 'Profile saved!',
+  'auth.welcomeToApp': 'Taking you to your dashboard…',
 
   // Profile
   'profile.title': 'My Profile',
@@ -449,6 +490,7 @@ const en: Record<TranslationKey, string> = {
   'market.noNearbyLocations': 'No nearby locations found',
   'market.newSearch': 'Try a new search',
   'market.sellOptions': 'Different ways to sell',
+  'market.getDirections': 'Get Directions',
 
   // Bazaar
   'bazaar.title': 'Bazaar',
@@ -500,6 +542,9 @@ const en: Record<TranslationKey, string> = {
   'community.sampleLink': 'Join community',
   'community.joinBeforeEntering': 'Join a community to participate',
   'community.tip': 'Tip: Active participation helps you learn faster',
+  'community.organizer': 'Organiser',
+  'community.learnMore': 'Learn More',
+  'community.joinWhatsApp': 'Join WhatsApp Group',
 
   // Events & Details
   'event.notFound': 'Event not found',
@@ -658,6 +703,38 @@ const hi: Record<TranslationKey, string> = {
   'auth.noAccount': 'खाता नहीं है?',
   'auth.hasAccount': 'पहले से खाता है?',
   'auth.passwordHint': 'कम से कम 6 अक्षर',
+  // New phone OTP auth
+  'auth.welcome': 'KrishiMitra में आपका स्वागत है',
+  'auth.welcomeSubtitle': 'आपका कृषि सहायक',
+  'auth.enterPhone': 'अपना मोबाइल नंबर दर्ज करें',
+  'auth.phoneHint': 'हम OTP भेजकर आपकी पहचान सत्यापित करेंगे',
+  'auth.phoneInvalid': 'कृपया 10 अंकों का सही मोबाइल नंबर दर्ज करें',
+  'auth.sendOtp': 'OTP भेजें',
+  'auth.step1of2': 'चरण 1 / 2',
+  'auth.step2of2': 'चरण 2 / 2',
+  'auth.enterOtp': 'OTP दर्ज करें',
+  'auth.otpSentTo': 'OTP भेजा गया',
+  'auth.otpInvalid': 'कृपया 6 अंकों का OTP दर्ज करें',
+  'auth.verifyOtp': 'सत्यापित करें और जारी रखें',
+  'auth.resendOtp': 'OTP दोबारा भेजें',
+  'auth.resendIn': 'दोबारा भेजें',
+  'auth.otpDisclaimer': 'सामान्य SMS दरें लागू हो सकती हैं। नंबर केवल लॉगिन के लिए उपयोग होगा।',
+  'auth.skipForNow': 'अभी छोड़ें',
+  // Onboarding
+  'auth.setupProfile': 'अपनी प्रोफ़ाइल बनाएं',
+  'auth.setupSubtitle': 'हमें आपका अनुभव बेहतर बनाने में मदद करें',
+  'auth.stepName': 'नाम',
+  'auth.stepLocation': 'स्थान',
+  'auth.stepEnterprise': 'उद्यम',
+  'auth.whatsYourName': 'आपका नाम क्या है?',
+  'auth.nameHint': 'आधार कार्ड के अनुसार पूरा नाम दर्ज करें',
+  'auth.whereAreYou': 'आप कहाँ रहते हैं?',
+  'auth.locationHint': 'अपना गांव और जिला दर्ज करें',
+  'auth.whatDoYouFarm': 'आप क्या खेती करते हैं?',
+  'auth.enterpriseHint': 'अपना मुख्य कृषि उद्यम चुनें',
+  'auth.saveAndStart': 'सहेजें और शुरू करें',
+  'auth.profileSaved': 'प्रोफ़ाइल सहेजी गई!',
+  'auth.welcomeToApp': 'आपके डैशबोर्ड पर ले जा रहे हैं…',
 
   // Profile
   'profile.title': 'मेरी प्रोफ़ाइल',
@@ -894,6 +971,7 @@ const hi: Record<TranslationKey, string> = {
   'market.noNearbyLocations': 'पास का कोई स्थान नहीं मिला',
   'market.newSearch': 'नई खोज करें',
   'market.sellOptions': 'बेचने के विभिन्न तरीके',
+  'market.getDirections': 'दिशा-निर्देश',
 
   // Bazaar
   'bazaar.title': 'बाज़ार',
@@ -945,6 +1023,9 @@ const hi: Record<TranslationKey, string> = {
   'community.sampleLink': 'समुदाय में शामिल हों',
   'community.joinBeforeEntering': 'भाग लेने के लिए एक समुदाय में शामिल हों',
   'community.tip': 'सुझाव: सक्रिय भागीदारी से आप तेजी से सीखते हैं',
+  'community.organizer': 'आयोजक',
+  'community.learnMore': 'जानें',
+  'community.joinWhatsApp': 'WhatsApp समूह से जुड़ें',
 
   // Events & Details
   'event.notFound': 'घटना नहीं मिली',
@@ -1103,6 +1184,38 @@ const mr: Record<TranslationKey, string> = {
   'auth.noAccount': 'खाते नाही?',
   'auth.hasAccount': 'आधीपासून खाते आहे?',
   'auth.passwordHint': 'किमान 6 अक्षरे',
+  // New phone OTP auth
+  'auth.welcome': 'KrishiMitra मध्ये आपले स्वागत आहे',
+  'auth.welcomeSubtitle': 'तुमचा शेती सहायक',
+  'auth.enterPhone': 'तुमचा मोबाइल नंबर टाका',
+  'auth.phoneHint': 'आम्ही OTP पाठवून तुमची ओळख पडताळू',
+  'auth.phoneInvalid': 'कृपया 10 अंकी योग्य मोबाइल नंबर टाका',
+  'auth.sendOtp': 'OTP पाठवा',
+  'auth.step1of2': 'पायरी 1 / 2',
+  'auth.step2of2': 'पायरी 2 / 2',
+  'auth.enterOtp': 'OTP टाका',
+  'auth.otpSentTo': 'OTP पाठवला',
+  'auth.otpInvalid': 'कृपया 6 अंकी OTP टाका',
+  'auth.verifyOtp': 'पडताळा आणि पुढे जा',
+  'auth.resendOtp': 'OTP पुन्हा पाठवा',
+  'auth.resendIn': 'पुन्हा पाठवा',
+  'auth.otpDisclaimer': 'सामान्य SMS दर लागू होऊ शकतात. नंबर फक्त लॉगिनसाठी वापरला जाईल.',
+  'auth.skipForNow': 'आत्ता वगळा',
+  // Onboarding
+  'auth.setupProfile': 'तुमची प्रोफाइल तयार करा',
+  'auth.setupSubtitle': 'तुमचा अनुभव चांगला करण्यात मदत करा',
+  'auth.stepName': 'नाव',
+  'auth.stepLocation': 'ठिकाण',
+  'auth.stepEnterprise': 'उद्योग',
+  'auth.whatsYourName': 'तुमचे नाव काय आहे?',
+  'auth.nameHint': 'आधार कार्डाप्रमाणे पूर्ण नाव टाका',
+  'auth.whereAreYou': 'तुम्ही कुठे राहता?',
+  'auth.locationHint': 'तुमचे गाव आणि जिल्हा टाका',
+  'auth.whatDoYouFarm': 'तुम्ही काय शेती करता?',
+  'auth.enterpriseHint': 'तुमचा मुख्य शेती उद्योग निवडा',
+  'auth.saveAndStart': 'जतन करा आणि सुरू करा',
+  'auth.profileSaved': 'प्रोफाइल जतन केली!',
+  'auth.welcomeToApp': 'तुमच्या डॅशबोर्डवर नेत आहोत…',
 
   // Profile
   'profile.title': 'माझी प्रोफाइल',
@@ -1339,6 +1452,7 @@ const mr: Record<TranslationKey, string> = {
   'market.noNearbyLocations': 'कोणताही जवळचा स्थान आढळला नाही',
   'market.newSearch': 'नवीन शोध करण्याचा प्रयत्न करा',
   'market.sellOptions': 'विक्रयाचे विविध मार्ग',
+  'market.getDirections': 'दिशानिर्देश',
 
   // Bazaar
   'bazaar.title': 'बाजार',
@@ -1390,6 +1504,9 @@ const mr: Record<TranslationKey, string> = {
   'community.sampleLink': 'समुदायात सामील व्हा',
   'community.joinBeforeEntering': 'भाग घेण्यासाठी समुदायात सामील व्हा',
   'community.tip': 'सूचना: सक्रिय भाग घेतल्याने आपण वेगाने शिकता',
+  'community.organizer': 'आयोजक',
+  'community.learnMore': 'जाणून घ्या',
+  'community.joinWhatsApp': 'WhatsApp गटात सामील व्हा',
 
   // Events & Details
   'event.notFound': 'कार्यक्रम आढळला नाही',
