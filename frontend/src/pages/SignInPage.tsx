@@ -2,13 +2,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTranslation } from '../i18n/useTranslation';
-import { Phone, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
 
 type Step = 'phone' | 'otp';
 
 export function SignInPage() {
   const { sendOtp, verifyOtp } = useAuth();
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [step, setStep]         = useState<Step>('phone');

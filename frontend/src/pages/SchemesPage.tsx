@@ -2,7 +2,31 @@ import { useState, useEffect } from 'react';
 import { DashboardHeader } from '../components/DashboardHeader';
 import { useTranslation } from '../i18n/useTranslation';
 import { api } from '../services/api';
-import type { Scheme } from '../services/schemeApi';
+
+// Shape returned by POST /api/v1/schemes/search
+interface Scheme {
+  id: string | number;
+  name: string;
+  description: string;
+  ministry?: string;
+  state?: string;
+  enterprise_type?: string;
+  benefits?: {
+    subsidy_percentage?: number | null;
+    other_benefits?: string[];
+  };
+  eligibility?: {
+    conditions?: string[];
+  };
+  application_process?: {
+    how_to_apply?: string;
+    required_documents?: string[];
+    deadline?: string | null;
+  };
+  contact_info?: {
+    website?: string;
+  };
+}
 
 export default function SchemesPage() {
   const { t } = useTranslation();
@@ -154,7 +178,7 @@ export default function SchemesPage() {
                     >
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="font-semibold text-gov-green flex-1">{scheme.name}</h3>
-                        {scheme.benefits.subsidy_percentage && (
+                        {scheme.benefits?.subsidy_percentage && (
                           <span className="text-xs bg-gov-saffron text-white px-2 py-1 rounded-full ml-2">
                             {scheme.benefits.subsidy_percentage}% Subsidy
                           </span>
@@ -261,13 +285,13 @@ export default function SchemesPage() {
               {/* Benefits */}
               <div>
                 <h3 className="font-semibold text-gov-green mb-2">Benefits</h3>
-                {selectedScheme.benefits.subsidy_percentage && (
+                {selectedScheme.benefits?.subsidy_percentage && (
                   <div className="text-sm mb-2">
                     <span className="font-semibold">Subsidy:</span> {selectedScheme.benefits.subsidy_percentage}%
                   </div>
                 )}
                 <ul className="text-sm text-gov-text-gray space-y-1">
-                  {selectedScheme.benefits.other_benefits.map((benefit, idx) => (
+                  {(selectedScheme.benefits?.other_benefits ?? []).map((benefit, idx) => (
                     <li key={idx}>• {benefit}</li>
                   ))}
                 </ul>
@@ -277,7 +301,7 @@ export default function SchemesPage() {
               <div>
                 <h3 className="font-semibold text-gov-green mb-2">Eligibility</h3>
                 <ul className="text-sm text-gov-text-gray space-y-1">
-                  {selectedScheme.eligibility.conditions.map((condition, idx) => (
+                  {(selectedScheme.eligibility?.conditions ?? []).map((condition, idx) => (
                     <li key={idx}>• {condition}</li>
                   ))}
                 </ul>
@@ -287,7 +311,7 @@ export default function SchemesPage() {
               <div>
                 <h3 className="font-semibold text-gov-green mb-2">Required Documents</h3>
                 <ul className="text-sm text-gov-text-gray space-y-1">
-                  {selectedScheme.application_process.required_documents.map((doc, idx) => (
+                  {(selectedScheme.application_process?.required_documents ?? []).map((doc, idx) => (
                     <li key={idx}>• {doc}</li>
                   ))}
                 </ul>
@@ -297,9 +321,9 @@ export default function SchemesPage() {
               <div>
                 <h3 className="font-semibold text-gov-green mb-2">How to Apply</h3>
                 <p className="text-sm text-gov-text-gray mb-3">
-                  {selectedScheme.application_process.how_to_apply}
+                  {selectedScheme.application_process?.how_to_apply}
                 </p>
-                {selectedScheme.contact_info.website && (
+                {selectedScheme.contact_info?.website && (
                   <a
                     href={selectedScheme.contact_info.website}
                     target="_blank"
