@@ -13,7 +13,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { RefreshCw, CheckCircle, XCircle, Clock, AlertTriangle, ChevronRight, ChevronDown } from 'lucide-react';
+import { RefreshCw, CheckCircle, AlertTriangle, ChevronRight, ChevronDown } from 'lucide-react';
 import { getAllPending, getPendingCount, type PendingOperation } from '../lib/offlineQueue';
 import { retryAllPending } from '../lib/resilientWrite';
 import { generateOperationId } from '../lib/operationId';

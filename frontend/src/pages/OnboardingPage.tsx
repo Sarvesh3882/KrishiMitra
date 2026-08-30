@@ -29,7 +29,7 @@ const MH_DISTRICTS = [
 type Step = 'name' | 'location' | 'enterprise' | 'done';
 
 export function OnboardingPage() {
-  const { saveProfile, user } = useAuth();
+  const { saveProfile } = useAuth();
   const { t, language } = useTranslation();
   const navigate = useNavigate();
 
@@ -305,7 +305,7 @@ export function OnboardingPage() {
               {/* Primary crop (optional) */}
               <div>
                 <label className="block text-[12px] font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {t('profile.primaryCrop')} <span className="normal-case font-normal">({t('general.optional') ?? 'optional'})</span>
+                  {t('profile.primaryCrop')} <span className="normal-case font-normal">(optional)</span>
                 </label>
                 <input
                   type="text"
